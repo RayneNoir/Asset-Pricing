@@ -54,6 +54,15 @@ def estimate_capm(marketReturns, assetReturns, riskfreeRate = 0.0025):
     return alphas, betas, covarianceMatrix, standardDeviationAlpha, testPortfolio, pValuePortfolio, testIndividual, pValueIndividual, marketSharpeRatio
 
 def estimate_factor_model(factorReturns, assetReturns, riskfreeRate = 0.0025):
+    """
+    This function estimates parameters in the econometric 3 factor model and their standard deviation.
+    It also tests the alphas with the t-statistic, F-statistic and p-values.
+
+    :param factorReturns: The 3 returns factors
+    :param assetReturns: The returns of the assets
+    :param riskfreeRate: the risk-free rate is set at 0.25%
+    :return: the factor model parameters, covariance matrix, standard deviation of intercept, t-statistic, F-statistic, corresponding p-values and the factor model Sharpe ratio.
+    """
     assetReturns = assetReturns - riskfreeRate
     T = assetReturns.shape[0]
     n = assetReturns.shape[1]
@@ -100,5 +109,6 @@ def estimate_factor_model(factorReturns, assetReturns, riskfreeRate = 0.0025):
     assetVariance = assetReturns.var()
     rmsAlpha = np.sqrt(np.mean(alphas**2))
     arivFactor = np.mean(varianceResidual / assetVariance)
+
 
     return  alphas, betas, covarianceMatrix, standardDeviationAlpha, testFactor, pValueFactor, testIndividual, pValueIndividual, factorSharpeRatio, rmsAlpha, arivFactor
