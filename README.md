@@ -1,5 +1,6 @@
 # Asset-Pricing
-Code for Asset Pricing Assignment
+Python code for Asset Pricing Assignment
+Code written and tested in PyCharm
 
 Use the Excel and CSV files provided by the repository! Otherwise, the code won't work!
 
