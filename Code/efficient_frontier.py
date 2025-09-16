@@ -28,7 +28,7 @@ def compute_efficient_frontier(returns, riskless=False, excess=False, riskFreeRa
         weightsTangent = (inverseSigma @ muReturns)/B
         muTangent = weightsTangent.T @ muReturns + riskFreeRate
         volatilityTangent = np.sqrt(weightsTangent.T @ sigmaReturns @ weightsTangent)
-        muTargetGrid = np.linspace(0, np.max(returns), 200)
+        muTargetGrid = np.linspace(0, np.max(returns), 1000)
         for r in muTargetGrid:
             portfolioReturn, portfolioVolatility = compute_portfolio(r, muReturns,
                                                                       riskless, A, B, C,
@@ -38,7 +38,9 @@ def compute_efficient_frontier(returns, riskless=False, excess=False, riskFreeRa
             portfolioVolatilities.append(portfolioVolatility)
         return np.array(portfolioReturns), np.array(portfolioVolatilities), muTangent, volatilityTangent
     else:
-        muTargetGrid = np.linspace(B/C, np.max(returns), 200)
+        muTargetGrid = np.linspace(0, np.max(returns), 1000)
+        muGMV = B/C + riskFreeRate
+        volatilityGMV = np.sqrt(1/C)
         for r in muTargetGrid:
             portfolioReturn, portfolioVolatility = compute_portfolio(r, muReturns,
                                                                       riskless, A, B, C,
@@ -47,7 +49,7 @@ def compute_efficient_frontier(returns, riskless=False, excess=False, riskFreeRa
             portfolioReturns.append(portfolioReturn + riskFreeRate)
             portfolioVolatilities.append(portfolioVolatility)
 
-        return np.array(portfolioReturns), np.array(portfolioVolatilities)
+        return np.array(portfolioReturns), np.array(portfolioVolatilities), muGMV, volatilityGMV
 
 def compute_portfolio(muTarget, mu, riskless, A, B, C, sigmaReturns, inverseSigma, iota, riskFreeRate):
     """
@@ -90,3 +92,8 @@ def compute_portfolio(muTarget, mu, riskless, A, B, C, sigmaReturns, inverseSigm
     portfolioVolatility = np.sqrt(portfolioVariance)
 
     return portfolioReturns, portfolioVolatility
+
+def compute_points(returns):
+    meanReturns = returns.mean(axis=0).T.to_numpy()
+    stdReturns = np.sqrt(returns.var())
+    return meanReturns, stdReturns
