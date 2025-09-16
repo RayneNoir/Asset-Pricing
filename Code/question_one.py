@@ -22,6 +22,7 @@ def plot_frontier(portfolioVolatilities, portfolioReturns, portfolioVolatilities
                 'GMV portfolio of (1)', 'Tangency portfolio of (2)', 'Tangency portfolio of (3)'])
     plt.grid(True)
     plt.show()
+    plt.savefig('Efficient frontier.png')
 
 def main(plot = True):
     # loading in the relevant datasets
@@ -65,4 +66,5 @@ def main(plot = True):
 
 if __name__ == '__main__':
     plt.close('all')
+
     main(plot=False)
