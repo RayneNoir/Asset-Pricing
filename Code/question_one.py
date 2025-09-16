@@ -24,8 +24,8 @@ def plot_frontier(portfolioVolatilities, portfolioReturns, portfolioVolatilities
     plt.title('Efficient Frontier')
     plt.xlabel('Volatility [%]')
     plt.ylabel('Total Returns [%]')
-    plt.xlim([0, 10])
-    plt.ylim([0, 10])
+    plt.xlim([0, 8])
+    plt.ylim([0, 8])
     plt.legend(['25 Portfolios','3 factors','(1) 25 Portfolios', '(2) 25 Portfolios + riskless asset',
                 '(3) Market returns + SMB + CMA', '(4) Market returns + SMB + CMA + riskless asset',
                 'GMV portfolio of (1)', 'GMV portfolio of (4)', 'Tangency portfolio of (2)', 'Tangency portfolio of (3)'])
@@ -85,4 +85,5 @@ def main(plot = True):
 
 if __name__ == '__main__':
     plt.close('all')
+
     main(plot=True)
