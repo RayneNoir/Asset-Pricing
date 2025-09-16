@@ -38,7 +38,7 @@ def compute_efficient_frontier(returns, riskless=False, excess=False, riskFreeRa
             portfolioVolatilities.append(portfolioVolatility)
         return np.array(portfolioReturns), np.array(portfolioVolatilities), muTangent, volatilityTangent
     else:
-        muTargetGrid = np.linspace(0, np.max(returns), 1000)
+        muTargetGrid = np.linspace(B/C, np.max(returns), 1000)
         muGMV = B/C + riskFreeRate
         volatilityGMV = np.sqrt(1/C)
         for r in muTargetGrid:
@@ -96,4 +96,5 @@ def compute_portfolio(muTarget, mu, riskless, A, B, C, sigmaReturns, inverseSigm
 def compute_points(returns):
     meanReturns = returns.mean(axis=0).T.to_numpy()
     stdReturns = np.sqrt(returns.var())
+
     return meanReturns, stdReturns
