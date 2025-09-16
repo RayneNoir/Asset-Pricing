@@ -3,7 +3,7 @@ Python code for Asset Pricing Assignment. Code written and tested in PyCharm
 
 Use the CSV files provided by the repository! Otherwise, the code won't work!
 
-Also put the Excel file start_end_fem21003.xlsx in the same folder as the code
+Also put the Excel file start_end_fem21003.xlsx from the assignment folder CANVAS in the same folder as the code.
 
 The files work as separate modules.
 
