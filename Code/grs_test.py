@@ -51,7 +51,12 @@ def estimate_capm(marketReturns, assetReturns, riskfreeRate = 0.0025):
     marketVariance = marketReturns.var()
     marketMean = marketReturns.mean()
     marketSharpeRatio = marketMean / np.sqrt(marketVariance)
-    return alphas, betas, covarianceMatrix, standardDeviationAlpha, testPortfolio, pValuePortfolio, testIndividual, pValueIndividual, marketSharpeRatio
+
+    # Pricing error indicators
+    assetVariance = assetReturns.var()
+    rmsAlpha = np.sqrt(np.mean(alphas ** 2))
+    arivCAPM = np.mean(varianceResidual / assetVariance)
+    return alphas, betas, covarianceMatrix, standardDeviationAlpha, testPortfolio, pValuePortfolio, testIndividual, pValueIndividual, marketSharpeRatio, rmsAlpha, arivCAPM
 
 def estimate_factor_model(factorReturns, assetReturns, riskfreeRate = 0.0025):
     """
@@ -109,6 +114,5 @@ def estimate_factor_model(factorReturns, assetReturns, riskfreeRate = 0.0025):
     assetVariance = assetReturns.var()
     rmsAlpha = np.sqrt(np.mean(alphas**2))
     arivFactor = np.mean(varianceResidual / assetVariance)
-
 
     return  alphas, betas, covarianceMatrix, standardDeviationAlpha, testFactor, pValueFactor, testIndividual, pValueIndividual, factorSharpeRatio, rmsAlpha, arivFactor
