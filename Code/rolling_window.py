@@ -102,7 +102,7 @@ def rolling_window_other_models(assetReturns, marketReturns, riskfreeRate = 0.00
     rms_alpha = np.sqrt(np.mean(oos_alpha ** 2))
 
     # Idiosyncratic variance
-    idiosyncratic_var = ((prediction_error - oos_alpha) ** 2).sum(axis=0) / (T_out - 1)
+    idiosyncratic_var = ((prediction_error - oos_alpha) ** 2).sum(axis=0) / (T - 241)
     ariv = np.mean(idiosyncratic_var / excessReturns.var().values)
 
     # Sharpe ratio of tangency portfolio

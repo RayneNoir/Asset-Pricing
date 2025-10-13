@@ -1,6 +1,7 @@
 import utils as ut
 import grs_test as grs
 import pandas as pd
+import numpy as np
 
 # loading in the relevant datasets
 returns = ut.open_file('25_Portfolios_ME_INV_5x5.csv', percentage=True)
@@ -31,12 +32,18 @@ print(50*"-")
 print('CAPM results')
 print(50*"-")
 print(result)
-print(f"CAPM: F-statistic: {testPortfolio:.3f}, p-value: {pValuePortfolio:.3f} \nMarket Sharpe ratio: {marketSharpeRatio:.2f}"
-      f"\nAverage relative idiosyncratic variance (ARIV): {100*arivCAPM:.2f}%, RMS pricing error: {rmsAlphaCAPM*100:.2f}%")
+print(f"CAPM: F-statistic: {testPortfolio:.3f}, p-value: {pValuePortfolio:.3f}"
+      f"\nMean alpha: {np.mean(alphas)*100:.2f}%"
+      f"\nMarket Sharpe ratio: {marketSharpeRatio:.2f}"
+      f"\nAverage relative idiosyncratic variance (ARIV): {100*arivCAPM:.2f}%"
+      f"\nRMS pricing error: {rmsAlphaCAPM*100:.2f}%")
 print(50*"-")
 print('3 Factor model')
 print(50*"-")
 print(resultFactor)
-print(f"Factor model: F-statistic: {testFactors:.3f}, p-value: {pValueFactors:.3f} \nFactor model Sharpe ratio: {factorSharpeRatio:.2f}"
-      f"\nAverage relative idiosyncratic variance (ARIV): {100*arivFactor:.2f}%, RMS pricing error: {rmsAlphaFactor*100:.2f}%")
+print(f"Factor model: F-statistic: {testFactors:.3f}, p-value: {pValueFactors:.3f}"
+      f"\nMean alpha: {np.mean(alphasFactor)*100:.2f}%"
+      f"\nFactor model Sharpe ratio: {factorSharpeRatio:.2f}"
+      f"\nAverage relative idiosyncratic variance (ARIV): {100*arivFactor:.2f}%"
+      f"\nRMS pricing error: {rmsAlphaFactor*100:.2f}%")
 print(50*"-")

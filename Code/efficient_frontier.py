@@ -96,5 +96,4 @@ def compute_portfolio(muTarget, mu, riskless, A, B, C, sigmaReturns, inverseSigm
 def compute_points(returns):
     meanReturns = returns.mean(axis=0).T.to_numpy()
     stdReturns = np.sqrt(returns.var())
-
     return meanReturns, stdReturns

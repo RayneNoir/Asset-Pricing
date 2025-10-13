@@ -5,15 +5,19 @@ def open_file(file, percentage=False):
     Prepares the dataset of returns/factors
 
     :param file: The name of the file containing the returns/factors
-    :param percentage: If True, the returns/factors are in percentage and converted to decimal values, False otherwise
+    :param percentage: If True, the input returns/factors are in percentages and are converted to decimal values, False otherwise
     :return: A pandas DataFrame containing the returns/factors for the period of interest
     """
 
     df = pd.read_csv(file)
 
     # Converting the dates as Y-M format and set it as index column
-    df.rename(columns={'Unnamed: 0': 'date'}, inplace=True)
-    df['date'] = pd.to_datetime(df['date'].astype(str), format='%Y%m')
+    if 'Unnamed: 0' in df.columns:
+        df.rename(columns={'Unnamed: 0': 'date'}, inplace=True)
+        df['date'] = pd.to_datetime(df['date'].astype(str), format='%Y%m')
+    else:
+        df['date'] = pd.to_datetime(df['date'].astype(str), errors='coerce', dayfirst=True)
+
     df.set_index('date', inplace=True)
     df.index = pd.PeriodIndex(df.index, freq='M')
     if percentage:

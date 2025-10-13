@@ -1,8 +1,16 @@
 import numpy as np
 import pandas as pd
-from sklearn.decomposition import PCA
 
 def pca(assetReturns, gamma=-1, factors=3, riskfreeRate = 0.0025):
+    """
+    This method performs the RP-PCA on the returns of the asset.
+
+    :param assetReturns: The returns of the assets
+    :param gamma: Penalty parameter
+    :param factors: Factors in the model
+    :param riskfreeRate: Risk-free rate
+    :return: loading matrix, alpha, idiosyncratic variance and
+    """
     excessReturns = assetReturns - riskfreeRate
     T = excessReturns.shape[0]
     n = excessReturns.shape[1]
