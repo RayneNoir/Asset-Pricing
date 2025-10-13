@@ -3,7 +3,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def rolling_window(assetReturns, multifactors, gamma=-1, threshold = 0.97, riskfreeRate=0.0025):
-    k_threshold, cumulative_var_ratio, combined_factors, F = determine_factors(
+    """
+    Determines the out-of-sample rolling window.
+
+    :param assetReturns: The return matrix
+    :param multifactors: The factor matrix
+    :param gamma: The penalty term
+    :param threshold: The minimum % of variance that is explained by PCA
+    :param riskfreeRate: The risk-free rate
+    :return: The Sharpe ratio, alphas and the ARIV
+    """
+    k_threshold, cumulative_var_ratio, combined_factors = determine_factors(
         assetReturns,
         multifactors,
         gamma=gamma,
@@ -50,6 +60,16 @@ def rolling_window(assetReturns, multifactors, gamma=-1, threshold = 0.97, riskf
     return sharpe_ratio, oos_alpha, rms_alpha, idiosyncratic_var, ariv, k_threshold, combined_factors
 
 def determine_factors(assetReturns, multifactors, gamma=-1, threshold = 0.97, riskfreeRate=0.0025):
+    """
+    "Determine the number of factors needed to explain the threshold % of variance"
+
+    :param assetReturns: The return matrix
+    :param multifactors: The factor matrix
+    :param gamma: The penalty term
+    :param threshold: The minimum % of variance that should be explained by a PC
+    :param riskfreeRate: The risk-free rate
+    :return: The k belonging to threshold, cumulative fraction of explained variance and the combined portfolio
+    """
     excessReturns = assetReturns - riskfreeRate
 
     combined_factors = pd.concat([excessReturns, multifactors], axis=1, join='inner')
@@ -69,7 +89,7 @@ def determine_factors(assetReturns, multifactors, gamma=-1, threshold = 0.97, ri
 
     explained_var_ratio = eigvals / eigvals.sum()
     cumulative_var_ratio = np.cumsum(explained_var_ratio)
-    k_threshold = int(np.argmax(cumulative_var_ratio >= threshold)) +1
+    k_threshold = int(np.argmax(explained_var_ratio <= threshold)) +1
 
     plt.figure(figsize=(8, 5))
     x = np.arange(1, len(eigvals) + 1)
@@ -77,7 +97,7 @@ def determine_factors(assetReturns, multifactors, gamma=-1, threshold = 0.97, ri
     plt.plot(x, explained_var_ratio, 'o-', label='Individual variance')
 
     # Horizontal line at the 97% threshold
-    plt.axhline(y=float(explained_var_ratio[k_threshold-1]), color='red', linestyle='--', label=f'{int(threshold * 100)}% threshold')
+    plt.axhline(y=float(explained_var_ratio[k_threshold-1]), color='red', linestyle='--', label=f'{int(cumulative_var_ratio[k_threshold-1] * 100)}% threshold')
 
     # Optional vertical line showing where it's reached
     plt.axvline(x=k_threshold, color='green', linestyle=':', label=f'k = {k_threshold}')
@@ -91,12 +111,12 @@ def determine_factors(assetReturns, multifactors, gamma=-1, threshold = 0.97, ri
     plt.tight_layout()
     plt.show()
 
-    print(f"{k_threshold} factors needed to explain {100*cumulative_var_ratio[k_threshold]:.2f}% of the variance")
+    print(f"{k_threshold} factors needed to explain {100*cumulative_var_ratio[k_threshold-1]:.2f}% of the variance")
 
     idx = np.argsort(eigvals)[::-1][:k_threshold]
     Lambda = eigvecs[:, idx]
 
-    return k_threshold, cumulative_var_ratio, combined_factors, Lambda
+    return k_threshold, cumulative_var_ratio, combined_factors
 
 def pca(excessReturns, gamma=-1, factors=3):
     """
