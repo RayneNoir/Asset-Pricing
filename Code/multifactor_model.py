@@ -9,7 +9,7 @@ def rolling_window(assetReturns, multifactors, gamma=-1, threshold = 0.97, riskf
     :param assetReturns: The return matrix
     :param multifactors: The factor matrix
     :param gamma: The penalty term
-    :param threshold: The minimum % of variance that is explained by PCA
+    :param threshold: The minimum % of variance that should be explained by a PC
     :param riskfreeRate: The risk-free rate
     :return: The Sharpe ratio, alphas and the ARIV
     """
@@ -160,4 +160,5 @@ def pca(excessReturns, gamma=-1, factors=3):
         w_tangent = np.linalg.inv(Sigma_F) @ mu_F / (iota.T @ np.linalg.inv(Sigma_F) @ mu_F)
 
     return Lambda, w_tangent, beta
+
 
